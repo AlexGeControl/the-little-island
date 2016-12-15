@@ -1,0 +1,193 @@
+<div class="panel panel-default">
+	<div class="panel-body">
+		<!-- Poster Image -->
+		<div class="row">
+			<div class="col-md-12">
+				<%= image_tag @photos[0].image.url(), class: "img-responsive" if @photos.length > 0 %>
+			</div>
+		</div>
+
+		<br>
+		
+		<!-- Main Info -->
+		<div class="row">
+			<div class="col-md-8">
+				<div class="row">
+					<div class="col-md-3 text-center">
+						<%= image_tag avatar_url(@room.user), class: "img-circle avatar-large" %><br><br>
+						<%= @room.user.username %>
+					</div>
+
+					<div class="col-md-9">
+						<h4><%= @room.listing_name %></h4>
+						<%= @room.address %>
+
+						<div class="row text-center row-space-1">
+							<div class="col-sm-3">
+								<i class="fa fa-home fa-2x"></i>
+							</div>
+							<div class="col-sm-3">
+								<i class="fa fa-users fa-2x"></i>
+							</div>
+							<div class="col-sm-3">
+								<i class="fa fa-bed fa-2x"></i>
+							</div>
+							<div class="col-sm-3">
+								<i class="fa fa-ship fa-2x"></i>
+							</div>
+						</div>
+
+						<div class="row text-center">
+							<div class="col-sm-3">
+								<%= @room.home_type %>
+							</div>
+							<div class="col-sm-3">
+								<%= pluralize(@room.accommodate, 'Guest') %>
+							</div>
+							<div class="col-sm-3">
+								<%= pluralize(@room.bed_room, 'Bedroom') %>
+							</div>
+							<div class="col-sm-3">
+								<%= pluralize(@room.bath_room, 'Bathroom') %>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+			<div class="col-md-4">
+				<!-- Reservation Form -->
+				<%= render 'reservations/form' %>
+			</div>
+		</div>
+
+		<!-- About -->
+		<div class="row">
+			<div class="col-md-12">
+				<h2>关于这里</h2>
+				<p><%= @room.summary %></p>
+			</div>
+		</div>
+
+		<!-- Amenities -->
+		<div class="row">
+			<div class="col-md-2">
+				<p>生活设施</p>
+			</div>
+			<div class="col-md-10">
+				<div class="row">
+					<div class="col-md-6">
+						<ul class="amenities">
+							<li class="<%= 'text-line-through' if !@room.is_tv %>">电视</li>
+							<li class="<%= 'text-line-through' if !@room.is_wifi %>">无线网络</li>
+							<li class="<%= 'text-line-through' if !@room.is_air %>">空调</li>
+							<li class="<%= 'text-line-through' if !@room.is_heating %>">24H热水</li>
+						</ul>
+					</div>
+					<div class="col-md-6">
+						<li class="<%= 'text-line-through' if !@room.is_kitchen %>">DIY厨房</li>
+						<li class="<%= 'text-line-through' if !@room.is_bbq %>">户外烧烤</li>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Carousel -->
+		<div class="row">
+			<div class="col-md-10 col-md-offset-1">
+				<div id="myCarousel" class="carousel slide" data-ride="carousel">
+				  
+					<% if @photos %>
+						<!-- Indicators -->
+				    <ol class="carousel-indicators">
+							<% @photos.each do |photo| %>
+								<li data-target="#myCarousel" data-slide-to="<%= photo.id %>"></li>
+							<% end %>	
+						</ol>				
+					<% end %>     
+
+				  <div class="carousel-inner" role="listbox">
+				    <% if @photos %>				
+							<% @photos.each do |photo| %>
+								<div class="item <%= 'active' if photo.id == @photos[0].id %>">          
+				          <%= image_tag photo.image.url() %>
+				        </div>
+							<% end %>	
+						<% end %>
+				  </div>
+
+				  <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+				    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+				    <span class="sr-only">Previous</span>
+				  </a>
+				  <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+				    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+				    <span class="sr-only">Next</span>
+				  </a>
+				</div>
+			</div>
+		</div>
+		
+		<br>
+		<hr>
+	
+		<!-- AMap Service -->
+		<div class="row">
+			<div class="col-md-12">
+				<div id="map">
+				</div>
+				<style>
+					#map {
+						 width: 100%;
+						height: 400px;
+					}
+				</style>
+				<script>
+					// Default center: Shanghai, China
+					var map = new AMap.Map('map',{
+						center: [121.47, 31.230416],
+						zoom: 14,
+						mapStyle: 'fresh',
+						showBuildingBlock: true,
+						resizeEnable: true
+					});
+					
+					AMap.plugin(['AMap.ToolBar','AMap.Scale'],function(){
+        				map.addControl(new AMap.ToolBar());
+        				map.addControl(new AMap.Scale());
+					});
+					
+					AMap.service(["AMap.PlaceSearch"], function() {
+						var service = new AMap.PlaceSearch();
+					
+      					service.search('<%= @room.address %>', function(status, result) {
+	    					if (status == 'complete') {
+	    						// Get location of given address:
+	    						var location = result.poiList.pois[0].location;
+	    						
+	    						map.setCenter(location);
+	    						
+	    						// Add marker:
+	      						marker = new AMap.Marker({
+	    							position: [location.getLng(), location.getLat()],
+	    							title: '小岛',
+	    							map: map
+								});
+								
+								// Add pop-up window:
+								infoWindow = new AMap.InfoWindow({
+       								content: '<%= @room.listing_name %>'
+   								});
+   								
+   								marker.on('click', function(e) {
+   									infoWindow.open(map, e.target.getPosition());
+   								});
+	    					}      						
+      					});
+    				});					
+				</script>
+			</div>
+		</div>
+	</div>
+</div>

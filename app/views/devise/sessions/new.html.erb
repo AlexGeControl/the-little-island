@@ -1,0 +1,27 @@
+<div class="row">
+  <div class="col-md-6 col-md-offset-3 center">
+    <h2>欢迎回来，小岛客</h2>
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+      <%= render 'shared/devisemes' %>
+      
+      <div class="form-group">
+        <%= f.email_field :email, autofocus: true, class: "form-control", placeholder: "输入您注册的电子邮箱" %>
+      </div>
+
+      <div class="form-group">
+        <%= f.password_field :password, autocomplete: "off", class: "form-control", placeholder: "输入您的密码" %>
+      </div>
+    
+      <% if devise_mapping.rememberable? -%>
+        <div class="form-group">
+          <%= f.check_box :remember_me %>保持登录状态
+        </div>
+      <% end -%>
+    
+      <div class="actions">
+        <%= f.submit "登录", class: "btn btn-primary" %>
+        <%= link_to "忘记密码?", new_user_password_path, class: "btn btn-primary"%>
+      </div>
+    <% end %>    
+  </div>
+</div>

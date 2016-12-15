@@ -1,0 +1,36 @@
+<div class="row">
+  <div class="col-md-6 col-md-offset-3 center">
+    <h2>欢迎您，新的小岛客</h2>
+    
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+      <%= render 'shared/devisemes' %>
+    
+      <div class="form-group">
+        <%= f.label :email, "电子邮箱", class:"form-label" %><br />
+        <%= f.email_field :email, autofocus: true, class: "form-control", placeholder: "用于唯一标识您的账户与找回密码" %>
+      </div>
+    
+      <div class="form-group">
+        <%= f.label :username, "用户名", class:"form-label" %><br />
+        <%= f.text_field :username, class: "form-control", placeholder: "用于显示您的个人信息" %>
+      </div>
+    
+      <div class="form-group">
+        <%= f.label :password, "设置密码", class:"form-label" %>
+        <% if @minimum_password_length %>
+        <em>(至少<%= @minimum_password_length %>个英文字符)</em>
+        <% end %><br />
+        <%= f.password_field :password, autocomplete: "off", class: "form-control", placeholder: "请设置您的密码" %>
+      </div>
+    
+      <div class="form-group">
+        <%= f.label :password_confirmation, "确认密码", class:"form-label" %><br />
+        <%= f.password_field :password_confirmation, autocomplete: "off", class: "form-control", placeholder: "请再次确认您的密码" %>
+      </div>
+    
+      <div class="actions">
+        <%= f.submit "注册", class: "btn btn-primary"%>
+      </div>
+    <% end %>
+  </div>
+</div>

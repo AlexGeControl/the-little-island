@@ -1,0 +1,142 @@
+<div class="panel panel-default">
+	<div class="panel-heading">
+		这里风景独好
+	</div>
+	<div class="panel-body">
+		<div class="container">
+			<%= form_for @room, html: {multipart: true} do |f| %>
+				<div class="row">
+					<div class="form-group">
+						<label>标题</label>
+						<%= f.text_field :listing_name, placeholder: "简明扼要又令人印象深刻", class: "form-control" %>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-4 select">
+						<div class="form-group">
+							<label>类型</label>
+							<%= f.select :home_type, [
+							    ["民宿","民宿"], 
+							    ["酒店/旅社","酒店/旅社"], 
+							    ["露营房车","露营房车"],
+							    ["采摘/种植园", "采摘/种植园"]
+							  ], id: "home_type", prompt: "请选择", class: "form-control" %>
+						</div>
+					</div>
+
+					<div class="col-md-4 select">
+						<div class="form-group">
+							<label>使用状况</label>
+							<%= f.select :room_type, [
+							    ["Entire","Entire"], 
+							    ["独占","独占"], 
+							    ["与他人共享","与他人共享"]
+							  ],prompt: "请选择", class: "form-control" %>
+						</div>
+					</div>
+
+					<div class="col-md-4 select">
+						<div class="form-group">
+							<label>可容纳人数</label>
+							<%= f.select :accommodate, [["1",1], ["2",2], ["3",3], ["4",4], ["5",5], ["6+",6]], prompt: "请选择", class: "form-control" %>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-4 select">
+						<div class="form-group">
+							<label>卧室数</label>
+							<%= f.select :bed_room, [["1",1], ["2",2], ["3",3], ["4+",4]], prompt: "请选择", class: "form-control" %>
+						</div>
+					</div>
+
+					<div class="col-md-4 select">
+						<div class="form-group">
+							<label>卫浴数</label>
+							<%= f.select :bath_room, [["1",1], ["2",2], ["3",3], ["4+",4]], prompt: "请选择", class: "form-control" %>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-4">
+						<div class="form-group">
+							<%= f.check_box :is_tv %> 电视
+						</div>
+						<div class="form-group">
+							<%= f.check_box :is_wifi %> 无线网络
+						</div>
+						<div class="form-group">
+							<%= f.check_box :is_air %> 空调
+						</div>
+						<div class="form-group">
+							<%= f.check_box :is_heating %> 24H热水
+						</div>
+					</div>
+
+					<div class="col-md-4">
+						<div class="form-group">
+							<%= f.check_box :is_kitchen %> DIY厨房
+						</div>
+						<div class="form-group">
+							<%= f.check_box :is_bbq %> 户外烧烤
+						</div>
+					</div>	
+				</div>	
+
+				<div class="row">
+					<div class="col-md-4">
+						<div class="form-group">
+							<label>价格/天</label>
+							<div class="input-group">
+								<div class="input-group-addon">RMB</div>
+								<%= f.text_field :price, placeholder: "RMB 100", class: "form-control" %>
+							</div>	
+						</div>
+					</div>
+				</div>
+				
+				<div class="row">
+					<div class="col-md-4">
+						<div class="form-group">
+							<span class="btn btn-primary btn-file">
+								<i class="fa fa-cloud-upload fa-lg"></i>上传图片
+								<%= file_field_tag "images[]", type: :file, multiple: true %>
+							</span>
+						</div>
+					</div>
+				</div>
+				
+				<div id="photos">
+					<%= render "photos/list" %>
+				</div>
+
+				<div class="row">
+					<div class="form-group">
+						<label>详细描述</label>
+						<%= f.text_area :summary, rows: 5, placeholder: "告诉大家进一步的信息", class: "form-control" %>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="form-group">
+						<label>地址</label>
+						<%= f.text_field :address, placeholder: "怎样才能在导航软件商搜到您?", class: "form-control" %>
+					</div>
+				</div>
+				
+				<div class="row">
+					<div class="form-group">
+						<%= f.check_box :active %> Active
+					</div>
+				</div>
+
+				<div class="actions">
+					<%= f.submit "完成", class: "btn btn-primary" %>
+				</div>
+			<% end %>
+		</div>
+	</div>
+</div>

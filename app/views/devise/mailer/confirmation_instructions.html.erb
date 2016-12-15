@@ -1,0 +1,11 @@
+<p>客官，侬好: </p>
+
+<p>欢迎来到小岛, <%= @email %>!</p>
+
+<p>您可以点击以下链接，以激活您的账号:</p>
+
+<p><%= link_to '激活账号', confirmation_url(@resource, confirmation_token: @token) %></p>
+
+<p></p>
+
+<p>小岛团队</p>
